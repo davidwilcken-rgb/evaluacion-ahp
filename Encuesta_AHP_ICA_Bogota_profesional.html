@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Encuesta AHP · Índice de Calidad Ambiental de Bogotá</title>
+<style>
+:root{
+  --bg:#f4f7f6;--card:#fff;--text:#17312c;--muted:#62736e;
+  --line:#dce6e2;--primary:#0f766e;--primary2:#115e59;
+  --accent:#d97706;--ok:#15803d;--bad:#b91c1c;
+  --shadow:0 10px 28px rgba(18,48,42,.08);--radius:18px
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(180deg,#eef6f3 0,#f7f9f8 300px,var(--bg) 100%);
+ color:var(--text);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+main{max-width:900px;margin:auto;padding:24px 16px 60px}
+.hero{background:linear-gradient(135deg,#0f766e,#134e4a);color:#fff;border-radius:24px;padding:30px 28px;
+ box-shadow:var(--shadow);margin-bottom:18px}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.76rem;font-weight:800;opacity:.82}
+h1{font-size:clamp(1.65rem,4vw,2.35rem);line-height:1.15;margin:8px 0 12px}
+h2{font-size:1.15rem;margin:0 0 10px}
+h3{font-size:1rem;margin:0 0 8px}
+p{margin:8px 0}.muted{color:var(--muted)}
+.hero .muted{color:#d8efeb}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;
+ margin:16px 0;box-shadow:0 6px 18px rgba(18,48,42,.045)}
+.progress-wrap{position:sticky;top:0;z-index:10;background:rgba(247,249,248,.94);backdrop-filter:blur(10px);
+ border-bottom:1px solid var(--line);padding:10px 0;margin:0 -16px 16px;padding-left:16px;padding-right:16px}
+.progress-head{display:flex;justify-content:space-between;font-size:.84rem;font-weight:700;margin-bottom:6px}
+.progress{height:8px;background:#e5eeeb;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;
+ width:0;background:var(--primary);transition:width .25s}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media(max-width:650px){.grid{grid-template-columns:1fr}}
+label{display:block;font-size:.9rem;font-weight:650}
+input,select,textarea{width:100%;margin-top:6px;padding:11px 12px;border:1px solid var(--line);
+ border-radius:11px;background:#fbfdfc;color:var(--text);font:inherit}
+textarea{min-height:110px;resize:vertical}.okm{color:var(--ok);font-weight:700}
+.check{display:flex;gap:10px;align-items:flex-start;margin-top:16px;font-weight:500}
+.check input{width:auto;margin:3px 0 0}
+.dim{padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:#fbfdfc;margin:9px 0}
+.dim b{color:var(--primary)}
+.scale-note{background:#f0f8f6;border-left:4px solid var(--primary);padding:12px 14px;border-radius:8px;margin:14px 0}
+.pair{border:1px solid var(--line);border-radius:16px;padding:17px;margin:14px 0;background:#fff}
+.pair.bad{border:2px solid var(--bad);background:#fffafa}
+.pair-title{font-weight:800;margin-bottom:4px}.pair-title span{color:var(--primary)}
+.choice{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-top:13px}
+.side{font-weight:750}.side.right{text-align:right}
+.buttons{display:grid;grid-template-columns:repeat(17,minmax(0,1fr));gap:4px;margin:13px 0 5px}
+.c{aspect-ratio:1;border:1px solid #cbd8d4;border-radius:50%;background:#f8fbfa;color:var(--text);
+ cursor:pointer;font-size:.74rem;padding:0;min-width:0}
+.c:hover{border-color:var(--primary);transform:translateY(-1px)}
+.c.l.on{background:var(--primary);border-color:var(--primary);color:#fff}
+.c.r.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.c.m.on{background:#334155;border-color:#334155;color:#fff}
+.legend{display:flex;justify-content:space-between;color:var(--muted);font-size:.74rem}
+.status{margin-top:9px;font-weight:650;min-height:24px}
+.badm{color:var(--bad)}.okm{color:var(--ok)}
+.result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+@media(max-width:550px){.result-grid{grid-template-columns:1fr}}
+.metric{padding:12px;border:1px solid var(--line);border-radius:12px;background:#fbfdfc}
+.metric strong{display:block;font-size:1.15rem}
+.bar{display:grid;grid-template-columns:34px 1fr 58px;gap:8px;align-items:center;margin:9px 0}
+.track{height:12px;background:#e7efec;border-radius:99px;overflow:hidden}.track i{display:block;height:100%;background:var(--primary)}
+button.primary{border:0;border-radius:11px;background:var(--primary);color:#fff;font:inherit;font-weight:800;
+ padding:12px 18px;cursor:pointer}button.primary:hover{background:var(--primary2)}
+button.secondary{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:11px;padding:10px 14px;
+ font:inherit;font-weight:700;cursor:pointer}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+#out{margin-top:16px}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.78rem;min-height:130px}
+.footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:28px}
+.required::after{content:" *";color:var(--bad)}
+</style>
+</head>
+<body>
+<main>
+<section class="hero">
+  <div class="eyebrow">Consulta a expertos · Método AHP</div>
+  <h1>Ponderación de las dimensiones del Índice de Calidad Ambiental de Bogotá</h1>
+  <p class="muted">Encuesta de comparación pareada basada en la metodología de Saaty. Su criterio experto permitirá estimar la importancia relativa de cada dimensión.</p>
+</section>
+
+<div class="progress-wrap">
+  <div class="progress-head"><span>Progreso de la encuesta</span><span id="progTxt">0%</span></div>
+  <div class="progress"><i id="prog"></i></div>
+</div>
+
+<section class="card">
+<h2>1. Información del experto</h2>
+<p class="muted">Complete sus datos. El cargo es opcional.</p>
+<div class="grid">
+<label class="required">Nombre completo<input id="nom" autocomplete="name"></label>
+<label class="required">Institución u organización<input id="ins" autocomplete="organization"></label>
+<label>Cargo<input id="car"></label>
+</div>
+<label class="check"><input type="checkbox" id="con"> Autorizo el uso de mis respuestas con fines académicos y de investigación.</label>
+</section>
+
+<section class="card">
+<h2>2. Dimensiones evaluadas</h2>
+<p class="muted">Antes de comparar, revise la definición de cada dimensión.</p>
+<div id="dims"></div>
+</section>
+
+<section class="card">
+<h2>3. Comparaciones por pares</h2>
+<p>Para cada par, indique <b>qué dimensión contribuye más a la calidad ambiental de un territorio en Bogotá</b> y cuánto más.</p>
+<div class="scale-note">
+<b>Escala de Saaty:</b> 1 = igual · 3 = moderada · 5 = fuerte · 7 = muy fuerte · 9 = extrema.
+Los valores 2, 4, 6 y 8 representan niveles intermedios.
+</div>
+<p class="muted">Al calificar, considere conjuntamente: validez y representatividad; medibilidad y comparabilidad temporal; factibilidad y cobertura espacial; y sensibilidad a la gestión pública.</p>
+<div id="pairs"></div>
+</section>
+
+<section class="card">
+<h2>4. Comprobación de su valoración global</h2>
+<div class="grid">
+<label>¿Cuál considera la <b>más importante</b>?
+<select id="masImp"><option value="">Seleccione…</option></select></label>
+<label>¿Cuál considera la <b>menos importante</b>?
+<select id="menosImp"><option value="">Seleccione…</option></select></label>
+</div>
+</section>
+
+<section class="card">
+<h2>5. Resultado y consistencia</h2>
+<div id="res" class="muted">Complete las seis comparaciones para calcular los pesos y verificar la consistencia.</div>
+</section>
+
+<section class="card">
+<h2>6. Comentarios y envío</h2>
+<label>Comentarios u observaciones (opcional)<textarea id="com" placeholder="Si desea, agregue observaciones sobre las dimensiones o la metodología."></textarea></label>
+<div class="actions">
+<button class="primary" id="send" type="button">Enviar respuesta</button>
+</div>
+<p id="gm" class="badm"></p><p id="sm" class="muted"></p>
+</section>
+
+<div class="footer">Formulario AHP · Ponderación de dimensiones del Índice de Calidad Ambiental de Bogotá</div>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const D=[
+ ["IA","Infraestructura azul","Componentes y funciones del territorio asociados a los cuerpos y sistemas de agua urbanos y su estado."],
+ ["IV","Infraestructura verde","Componentes y funciones del territorio asociados a la cobertura y estructura vegetal urbana."],
+ ["CA","Calidad del aire","Condiciones atmosféricas del territorio y factores asociados a la calidad del aire urbano."],
+ ["S","Suelo","Condiciones del suelo urbano y su relación con la gestión ambiental del territorio."]
+];
+const P=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
+const W={3:"moderadamente más importante",5:"fuertemente más importante",7:"muy fuertemente más importante",9:"extremadamente más importante"};
+const sel=Array(6).fill(null);let R=null;
+
+const val=k=>k<8?9-k:k===8?1:1/(k-7);
+const mag=k=>k<=8?9-k:k-7;
+function txt(t,k){
+ const[i,j]=P[t],m=mag(k);
+ if(m===1)return "Igual importancia (1)";
+ const w=D[k<8?i:j][0],l=D[k<8?j:i][0];
+ return W[m]?`${w} es ${W[m]} que ${l} (${m})`:`${w} tiene importancia intermedia sobre ${l} (${m})`;
+}
+$("dims").innerHTML=D.map(d=>`<div class="dim"><b>${d[0]} · ${d[1]}:</b> ${d[2]}</div>`).join("");
+const opts=D.map(d=>`<option value="${d[0]}">${d[1]}</option>`).join("");
+$("masImp").insertAdjacentHTML("beforeend",opts);
+$("menosImp").insertAdjacentHTML("beforeend",opts);
+
+P.forEach(([i,j],t)=>{
+ const d=document.createElement("div");d.className="pair";d.id="p"+t;
+ let b="";
+ for(let k=0;k<17;k++) b+=`<button type="button" class="c ${k<8?"l":k>8?"r":"m"}" data-t="${t}" data-k="${k}" aria-label="${mag(k)}">${mag(k)}</button>`;
+ d.innerHTML=`<div class="pair-title">Comparación ${t+1} de 6: <span>${D[i][1]}</span> vs <span>${D[j][1]}</span></div>
+ <div class="choice"><div class="side">${D[i][1]}</div><div>↔</div><div class="side right">${D[j][1]}</div></div>
+ <div class="buttons">${b}</div>
+ <div class="legend"><span>Más importancia para ${D[i][0]} ◀</span><span>Igual</span><span>▶ Más importancia para ${D[j][0]}</span></div>
+ <div class="status" id="s${t}">Sin responder</div>`;
+ $("pairs").appendChild(d);
+});
+
+$("pairs").addEventListener("click",e=>{
+ const c=e.target.closest(".c");if(!c)return;
+ const t=+c.dataset.t,k=+c.dataset.k;sel[t]=k;
+ $("p"+t).querySelectorAll(".c").forEach(x=>x.classList.toggle("on",x===c));
+ $("s"+t).textContent=txt(t,k);update();progress();
+});
+$("masImp").addEventListener("change",update);
+$("menosImp").addEventListener("change",update);
+
+function calc(){
+ const n=4,A=Array.from({length:n},()=>Array(n).fill(1));
+ P.forEach(([i,j],t)=>{const v=val(sel[t]);A[i][j]=v;A[j][i]=1/v});
+ let w=Array(n).fill(1/n);
+ for(let it=0;it<200;it++){
+   const x=A.map(r=>r.reduce((s,a,c)=>s+a*w[c],0)),s=x.reduce((a,b)=>a+b);
+   w=x.map(v=>v/s);
+ }
+ const Aw=A.map(r=>r.reduce((s,a,c)=>s+a*w[c],0));
+ const lam=Aw.reduce((s,v,i)=>s+v/w[i],0)/n,CI=(lam-n)/(n-1);
+ return{A,w,lam,CI,CR:CI/0.9}
+}
+function update(){
+ document.querySelectorAll(".pair").forEach(p=>p.classList.remove("bad"));
+ const done=sel.filter(v=>v!==null).length;
+ if(done<6){R=null;$("res").innerHTML=`<p>Responda las 6 comparaciones (${done}/6) para ver los pesos y la verificación de consistencia.</p>`;return}
+ R=calc();const{w,lam,CI,CR}=R;
+ let h="<h3>Pesos relativos</h3>";
+ h+=D.map((d,i)=>`<div class="bar"><span>${d[0]}</span><div class="track"><i style="width:${(w[i]*100).toFixed(1)}%"></i></div><b>${(w[i]*100).toFixed(1)}%</b></div>`).join("");
+ h+=`<div class="result-grid">
+ <div class="metric"><span class="muted">λmax</span><strong>${lam.toFixed(3)}</strong></div>
+ <div class="metric"><span class="muted">Índice de consistencia (CI)</span><strong>${CI.toFixed(3)}</strong></div>
+ <div class="metric"><span class="muted">Razón de consistencia (CR)</span><strong>${CR.toFixed(3)}</strong></div>
+ <div class="metric"><span class="muted">Criterio</span><strong>${CR<0.1?"Consistente":"Revisar juicios"}</strong></div></div>`;
+ if(CR<0.1) h+=`<p class="okm">✓ Sus juicios son consistentes (CR &lt; 0,10). Puede continuar.</p>`;
+ else{
+   let m=0,tt=0;P.forEach(([i,j],t)=>{const e=Math.abs(Math.log(R.A[i][j]*w[j]/w[i]));if(e>m){m=e;tt=t}});
+   $("p"+tt).classList.add("bad");
+   h+=`<p class="badm">Hay inconsistencia (CR ≥ 0,10). Revise primero la comparación ${tt+1} (${D[P[tt][0]][0]} vs ${D[P[tt][1]][0]}), marcada en rojo.</p>`;
+ }
+ const mi=$("masImp").value,ni=$("menosImp").value;
+ if(mi&&ni){
+   const maxI=w.indexOf(Math.max(...w)),minI=w.indexOf(Math.min(...w));
+   if(D[maxI][0]!==mi||D[minI][0]!==ni)
+     h+=`<p class="badm">Las respuestas de comprobación no coinciden con sus comparaciones por pares. Según sus comparaciones, la más importante sería ${D[maxI][1]} y la menos importante ${D[minI][1]}.</p>`;
+   else h+=`<p class="okm">✓ Sus respuestas de comprobación coinciden con sus comparaciones por pares.</p>`;
+ }
+ $("res").innerHTML=h;
+}
+function progress(){
+ const answered=sel.filter(v=>v!==null).length;
+ const info=[$("nom").value.trim(),$("ins").value.trim(),$("con").checked].filter(Boolean).length;
+ const checks=[$("masImp").value,$("menosImp").value].filter(Boolean).length;
+ const pct=Math.round(((info/3)+(answered/6)+(checks/2))/3*100);
+ $("prog").style.width=pct+"%";$("progTxt").textContent=pct+"%";
+}
+["nom","ins","car","com"].forEach(id=>$(id).addEventListener("input",progress));
+$("con").addEventListener("change",progress);
+$("masImp").addEventListener("change",progress);$("menosImp").addEventListener("change",progress);
+
+const SCRIPT_URL = "PEGA_AQUI_LA_URL_DE_TU_GOOGLE_APPS_SCRIPT";
+
+function buildPayload(){
+ const J={};
+ P.forEach(([i,j],t)=>{
+   const k=sel[t];
+   J[D[i][0]+"/"+D[j][0]]=k<=8?String(9-k):"1/"+(k-7);
+ });
+ return {
+   version:2,
+   fecha:new Date().toISOString(),
+   experto:{
+     nombre:$("nom").value.trim(),
+     institucion:$("ins").value.trim(),
+     cargo:$("car").value.trim()
+   },
+   juicios:J,
+   pesos:Object.fromEntries(D.map((d,i)=>[d[0],+R.w[i].toFixed(4)])),
+   CR:+R.CR.toFixed(4),
+   comprobacion:{
+     mas_importante:$("masImp").value,
+     menos_importante:$("menosImp").value
+   },
+   comentarios:$("com").value.trim()
+ };
+}
+
+$("send").onclick=async()=>{
+ const need=[];
+ if(!$("nom").value.trim()||!$("ins").value.trim())need.push("complete nombre e institución");
+ if(!$("con").checked)need.push("acepte el uso de sus respuestas");
+ if(!R)need.push("responda las 6 comparaciones");
+ else if(R.CR>=0.1)need.push("corrija la inconsistencia (CR < 0,10)");
+ if(!$("masImp").value||!$("menosImp").value)need.push("responda las dos preguntas de comprobación");
+ else if($("masImp").value===$("menosImp").value)need.push("seleccione dimensiones diferentes en las preguntas de comprobación");
+
+ if(need.length){
+   $("gm").textContent="Antes de enviar: "+need.join("; ")+".";
+   return;
+ }
+
+ if(!SCRIPT_URL || SCRIPT_URL.includes("https://script.google.com/macros/s/AKfycbzQbyA0FtkmgEnL-T0X1Y1XYmZ8TFx3VCdl-1_gNMBV5Ce-lZLqrSFCnLBe8a54yYE/exec")){
+   $("gm").textContent="El formulario todavía no está conectado a Google Sheets. Configure la URL del Apps Script en el código.";
+   return;
+ }
+
+ const btn=$("send");
+ btn.disabled=true;
+ btn.textContent="Enviando…";
+ $("gm").textContent="";
+ $("sm").textContent="Enviando su respuesta. No cierre esta ventana…";
+
+ try{
+   const payload=buildPayload();
+   const response=await fetch(SCRIPT_URL,{
+     method:"POST",
+     mode:"cors",
+     headers:{"Content-Type":"text/plain;charset=utf-8"},
+     body:JSON.stringify(payload)
+   });
+   const result=await response.json();
+   if(!result.ok) throw new Error(result.message||"No se pudo registrar la respuesta.");
+
+   $("sm").textContent="✓ Su respuesta fue enviada correctamente. Muchas gracias por participar.";
+   $("sm").className="okm";
+   $("send").textContent="Respuesta enviada";
+ }catch(err){
+   $("gm").textContent="No fue posible enviar la respuesta. Verifique la conexión a internet e inténtelo nuevamente.";
+   $("sm").textContent="";
+   btn.disabled=false;
+   btn.textContent="Enviar respuesta";
+ }
+};
+
+progress();update();
+
+</script>
+</body>
+</html>
